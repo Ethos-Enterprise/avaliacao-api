@@ -26,7 +26,7 @@ public class AvaliacaoController {
     }
 
     @GetMapping
-    public List<AvaliacaoResponse> getAllPortfolio(
+    public List<AvaliacaoResponse> getAllAvaliacao(
             @RequestParam(value = "comentario", required = false) String comentario,
             @RequestParam(value = "nota", required = false) Integer nota,
             @RequestParam(value = "data", required = false) LocalDate data,
