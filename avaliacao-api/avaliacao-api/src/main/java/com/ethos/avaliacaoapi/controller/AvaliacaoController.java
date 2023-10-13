@@ -1,0 +1,64 @@
+package com.ethos.avaliacaoapi.controller;
+
+import com.ethos.avaliacaoapi.controller.request.AvaliacaoRequest;
+import com.ethos.avaliacaoapi.controller.response.AvaliacaoResponse;
+import com.ethos.avaliacaoapi.services.AvaliacaoService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.UUID;
+
+@RestController
+@RequestMapping(path = "/v1.0/avaliacoes")
+@RequiredArgsConstructor
+@CrossOrigin("*")
+public class AvaliacaoController {
+
+    public final AvaliacaoService avaliacaoService;
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public AvaliacaoResponse postAvaliacao(@RequestBody AvaliacaoRequest request) {
+        return avaliacaoService.postAvaliacao(request);
+    }
+
+    @GetMapping
+    public List<AvaliacaoResponse> getAllPortfolio(
+            @RequestParam(value = "comentario", required = false) String comentario,
+            @RequestParam(value = "nota", required = false) Integer nota,
+            @RequestParam(value = "data", required = false) LocalDate data,
+            @RequestParam(value = "fkEmpresa", required = false)  UUID fkEmpresa,
+            @RequestParam(value = "fkPrestadoraServico", required = false) UUID fkPrestadoraServico) {
+        if (comentario != null) {
+            return avaliacaoService.getAvaliacaoComentario(comentario);
+        } else if (nota  != null ) {
+            return avaliacaoService.getAvaliacaoNota(nota);
+        } else if (data != null) {
+            return avaliacaoService.getAvaliacaoData(data);
+        } else if (fkEmpresa != null) {
+            return avaliacaoService.getAvaliacaoFkEmpresa(fkEmpresa);
+        } else if (fkPrestadoraServico != null) {
+            return avaliacaoService.getAvaliacaoFkPrestadoraServico(fkPrestadoraServico);
+        }
+        return avaliacaoService.getAllAvaliacao();
+    }
+
+    @GetMapping("/{id}")
+    public AvaliacaoResponse getAvaliacaoById(@PathVariable UUID id) {
+        return avaliacaoService.getAvaliacaoById(id);
+    }
+
+    @PutMapping("/{id}")
+    public AvaliacaoResponse putAvaliacaoById(@PathVariable UUID id, @RequestBody AvaliacaoRequest request) {
+        return avaliacaoService.putAvaliacaoById(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteAvaliacaoById(@PathVariable UUID id) {
+        return avaliacaoService.deleteAvaliacaoById(id);
+    }
+
+}
