@@ -32,14 +32,14 @@ public class AvaliacaoController {
 
             @RequestParam(value = "comentario", required = false) String comentario,
             @RequestParam(value = "nota", required = false) Integer nota,
-            @RequestParam(value = "fkEmpresa", required = false)  UUID fkEmpresa,
+            @RequestParam(value = "fkEmpresa", required = false) UUID fkEmpresa,
             @RequestParam(value = "fkServico", required = false) UUID fkServico) {
 
         if (comentario != null) {
             return avaliacaoService.getAvaliacaoComentario(comentario);
-        } else if (nota  != null ) {
+        } else if (nota != null) {
             return avaliacaoService.getAvaliacaoNota(nota);
-        }else if (fkEmpresa != null) {
+        } else if (fkEmpresa != null) {
             return avaliacaoService.getAvaliacaoFkEmpresa(fkEmpresa);
         } else if (fkServico != null) {
             return avaliacaoService.getAvaliacaoFkServico(fkServico);
@@ -62,4 +62,8 @@ public class AvaliacaoController {
         return avaliacaoService.deleteAvaliacaoById(id);
     }
 
+    @PostMapping("/historico")
+    public void postHistorico() {
+        avaliacaoService.gerarListaObj();
+    }
 }
