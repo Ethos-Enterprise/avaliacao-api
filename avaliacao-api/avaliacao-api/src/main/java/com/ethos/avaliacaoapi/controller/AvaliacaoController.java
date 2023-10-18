@@ -2,7 +2,9 @@ package com.ethos.avaliacaoapi.controller;
 
 import com.ethos.avaliacaoapi.controller.request.AvaliacaoRequest;
 import com.ethos.avaliacaoapi.controller.response.AvaliacaoResponse;
+import com.ethos.avaliacaoapi.repository.entity.AvaliacaoEntity;
 import com.ethos.avaliacaoapi.services.AvaliacaoService;
+import com.ethos.avaliacaoapi.services.arquivo.ListaObj;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import lombok.RequiredArgsConstructor;
@@ -66,4 +68,12 @@ public class AvaliacaoController {
     public void postHistorico() {
         avaliacaoService.gerarListaObj();
     }
+
+    @GetMapping("/data")
+    public int getAvaliacaoDataOrdenada(@RequestParam LocalDate data) {
+        ListaObj<AvaliacaoEntity> listaObj = avaliacaoService.gerarListaObj();
+        ListaObj<AvaliacaoEntity> listaObjOrdenada = avaliacaoService.ordenaDataListaObj(listaObj);
+        return avaliacaoService.pesquisaBinaria(listaObjOrdenada, data);
+    }
+
 }

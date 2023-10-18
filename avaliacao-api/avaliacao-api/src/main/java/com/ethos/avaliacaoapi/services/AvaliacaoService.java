@@ -114,7 +114,7 @@ public class AvaliacaoService {
         return avaliacoes.stream().map(avaliacaoResponseMapper::from).toList();
     }
 
-    public void gerarListaObj() {
+    public ListaObj<AvaliacaoEntity> gerarListaObj() {
         List<AvaliacaoEntity> avaliacoes = repository.findAll();
         ListaObj<AvaliacaoEntity> listaObj = new ListaObj<>(avaliacoes.size());
 
@@ -123,6 +123,7 @@ public class AvaliacaoService {
         }
 
         ordenaListaObj(listaObj);
+        return listaObj;
     }
 
     private void ordenaListaObj(ListaObj<AvaliacaoEntity> listaObj) {
@@ -142,6 +143,59 @@ public class AvaliacaoService {
             }
         }
         gravaArquivoCsv(listaObj, "Avaliacoes");
+    }
+
+    public ListaObj<AvaliacaoEntity> ordenaDataListaObj(ListaObj<AvaliacaoEntity> listaObj) {
+        for (int i = 0; i < listaObj.getTamanho() - 1; i++) {
+            int indMenor = i;
+            for (int j = i + 1; j < listaObj.getTamanho(); j++) {
+                AvaliacaoEntity avaliacaoI = listaObj.getElemento(indMenor);
+                AvaliacaoEntity avaliacaoJ = listaObj.getElemento(j);
+
+                if (avaliacaoJ.getData().isBefore(avaliacaoI.getData())) {
+                    indMenor = j;
+                }
+            }
+
+            if (indMenor != i) {
+                listaObj.trocaElementos(i, indMenor);
+            }
+        }
+
+        return listaObj;
+    }
+
+    public int pesquisaBinaria(ListaObj<AvaliacaoEntity> listaObj, LocalDate data) {
+
+
+        int indiceInferior = 0;
+
+        int indiceSuperior = listaObj.getTamanho() - 1;
+
+
+        while (indiceInferior <= indiceSuperior) {
+
+            int meio = (indiceInferior + indiceSuperior) / 2;
+
+
+            if (listaObj.getElemento(meio).getData().isEqual(data) ) {
+
+                return meio;
+
+            } else if (data.isAfter(listaObj.getElemento(meio).getData())) {
+
+                indiceSuperior = meio - 1;
+
+            } else {
+
+                indiceInferior = meio + 1;
+
+            }
+
+        }
+
+        return -1;
+
     }
 
 
