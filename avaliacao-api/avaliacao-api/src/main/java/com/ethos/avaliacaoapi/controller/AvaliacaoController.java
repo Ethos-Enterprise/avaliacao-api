@@ -27,21 +27,20 @@ public class AvaliacaoController {
 
     @GetMapping
     public List<AvaliacaoResponse> getAllAvaliacao(
+
             @RequestParam(value = "comentario", required = false) String comentario,
             @RequestParam(value = "nota", required = false) Integer nota,
-            @RequestParam(value = "data", required = false) LocalDate data,
             @RequestParam(value = "fkEmpresa", required = false)  UUID fkEmpresa,
-            @RequestParam(value = "fkPrestadoraServico", required = false) UUID fkPrestadoraServico) {
+            @RequestParam(value = "fkServico", required = false) UUID fkServico) {
+
         if (comentario != null) {
             return avaliacaoService.getAvaliacaoComentario(comentario);
         } else if (nota  != null ) {
             return avaliacaoService.getAvaliacaoNota(nota);
-        } else if (data != null) {
-            return avaliacaoService.getAvaliacaoData(data);
-        } else if (fkEmpresa != null) {
+        }else if (fkEmpresa != null) {
             return avaliacaoService.getAvaliacaoFkEmpresa(fkEmpresa);
-        } else if (fkPrestadoraServico != null) {
-            return avaliacaoService.getAvaliacaoFkPrestadoraServico(fkPrestadoraServico);
+        } else if (fkServico != null) {
+            return avaliacaoService.getAvaliacaoFkServico(fkServico);
         }
         return avaliacaoService.getAllAvaliacao();
     }

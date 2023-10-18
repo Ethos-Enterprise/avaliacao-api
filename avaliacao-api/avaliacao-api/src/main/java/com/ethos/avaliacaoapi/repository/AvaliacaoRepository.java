@@ -37,6 +37,6 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoEntity, UUID
 
     List<AvaliacaoEntity> findByFkEmpresa(UUID fkEmpresa);
 
-    List<AvaliacaoEntity> findByFkPrestadoraServico(UUID fkPrestadoraServico);
+    List<AvaliacaoEntity> findByFkServico(UUID fkServico);
 
 }

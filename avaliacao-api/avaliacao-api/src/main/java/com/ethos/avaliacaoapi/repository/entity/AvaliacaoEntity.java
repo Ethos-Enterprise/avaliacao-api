@@ -20,7 +20,7 @@ public class AvaliacaoEntity {
     String comentario;
     Integer nota;
     UUID fkEmpresa;
-    UUID fkPrestadoraServico;
+    UUID fkServico;
     LocalDate data;
 
 
@@ -28,13 +28,13 @@ public class AvaliacaoEntity {
     }
 
     @Builder(toBuilder = true)
-    public AvaliacaoEntity(UUID id, String comentario, Integer nota, LocalDate data, UUID fkEmpresa, UUID fkPrestadoraServico) {
+    public AvaliacaoEntity(UUID id, String comentario, Integer nota, LocalDate data, UUID fkEmpresa, UUID fkServico) {
         this.id = UUID.randomUUID();
         this.comentario = comentario;
         this.nota = nota;
-        this.data = data;
+        this.data = LocalDate.now();
         this.fkEmpresa = fkEmpresa;
-        this.fkPrestadoraServico = fkPrestadoraServico;
+        this.fkServico = fkServico;
     }
 
     public void setId(UUID id) {
@@ -49,15 +49,15 @@ public class AvaliacaoEntity {
         this.nota = nota;
     }
 
-    public void setData(LocalDate data) {
-        this.data = data;
-    }
-
     public void setFkEmpresa(UUID fkEmpresa) {
         this.fkEmpresa = fkEmpresa;
     }
 
-    public void setFkPrestadoraServico(UUID fkPrestadoraServico) {
-        this.fkPrestadoraServico = fkPrestadoraServico;
+    public void setFkServico(UUID fkServico) {
+        this.fkServico = fkServico;
+    }
+
+    public void setData(LocalDate data) {
+        this.data = data;
     }
 }

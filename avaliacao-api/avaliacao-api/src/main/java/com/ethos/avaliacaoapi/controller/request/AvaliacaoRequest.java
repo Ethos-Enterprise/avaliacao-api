@@ -13,7 +13,7 @@ public record AvaliacaoRequest(
        String comentario,
         Integer nota,
         LocalDate data,
-        UUID fkPrestadoraServico,
+        UUID fkServico,
         UUID fkEmpresa) {
 
 }

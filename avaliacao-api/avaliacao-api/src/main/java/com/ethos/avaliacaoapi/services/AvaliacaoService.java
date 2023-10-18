@@ -56,15 +56,14 @@ public class AvaliacaoService {
     }
 
     public AvaliacaoResponse putAvaliacaoById(UUID id, AvaliacaoRequest request) {
-        Optional<AvaliacaoEntity> entity;
-        entity = repository.findById(id);
-        if (entity.isEmpty()) {
+
+        if (!repository.existsById(id)) {
             throw new AvaliacaoNaoExisteException("Avaliação com o id %s não existe".formatted(id));
         }
         if (request.comentario() != null && !request.comentario().isEmpty()) {
             repository.updateComentario(request.comentario(), id);
         }
-        if (request.nota() < 1 || request.nota() > 5) {
+        if (request.nota() >= 1 || request.nota() <= 5) {
             repository.updateNota(request.nota(), id);
         }
 
@@ -75,14 +74,18 @@ public class AvaliacaoService {
         return repository.findById(id).map(avaliacaoResponseMapper::from).get();
     }
 
+
+
     public String deleteAvaliacaoById(UUID id) {
-        Optional<AvaliacaoEntity> avaliacao = repository.findById(id);
+        Optional<AvaliacaoEntity> avaliacao = this.repository.findById(id);
         if (avaliacao.isEmpty()) {
             throw new AvaliacaoNaoExisteException("Avaliação com o id %s não existe".formatted(id));
+        } else {
+            this.repository.deleteById(id);
+            return "Avaliação deletada com sucesso";
         }
-        repository.deleteById(id);
-        return "Avaliação deletado com sucesso";
     }
+
 
     public List<AvaliacaoResponse> getAvaliacaoNota(Integer nota) {
         List<AvaliacaoEntity> avaliacao = repository.findByNota(nota);
@@ -104,8 +107,8 @@ public class AvaliacaoService {
         return avaliacao.stream().map(avaliacaoResponseMapper::from).toList();
     }
 
-    public List<AvaliacaoResponse> getAvaliacaoFkPrestadoraServico(UUID fk) {
-        List<AvaliacaoEntity> avaliacao = repository.findByFkPrestadoraServico(fk);
+    public List<AvaliacaoResponse> getAvaliacaoFkServico(UUID fk) {
+        List<AvaliacaoEntity> avaliacao = repository.findByFkServico(fk);
         return avaliacao.stream().map(avaliacaoResponseMapper::from).toList();
     }
 }
