@@ -3,6 +3,8 @@ package com.ethos.avaliacaoapi.controller;
 import com.ethos.avaliacaoapi.controller.request.AvaliacaoRequest;
 import com.ethos.avaliacaoapi.controller.response.AvaliacaoResponse;
 import com.ethos.avaliacaoapi.services.AvaliacaoService;
+import jakarta.validation.Valid;
+import jakarta.validation.Validation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +23,7 @@ public class AvaliacaoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AvaliacaoResponse postAvaliacao(@RequestBody AvaliacaoRequest request) {
+    public AvaliacaoResponse postAvaliacao(@RequestBody @Valid AvaliacaoRequest request) {
         return avaliacaoService.postAvaliacao(request);
     }
 
