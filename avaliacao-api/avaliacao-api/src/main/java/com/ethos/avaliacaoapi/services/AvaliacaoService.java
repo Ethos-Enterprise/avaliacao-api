@@ -1,8 +1,12 @@
 package com.ethos.avaliacaoapi.services;
 
+import com.ethos.avaliacaoapi.api.EmpresaClient;
+import com.ethos.avaliacaoapi.api.empresadto.EmpresaDTO;
 import com.ethos.avaliacaoapi.controller.request.AvaliacaoRequest;
 import com.ethos.avaliacaoapi.controller.response.AvaliacaoResponse;
 import com.ethos.avaliacaoapi.exception.AvaliacaoNaoExisteException;
+import com.ethos.avaliacaoapi.exception.EmpresaApiException;
+import com.ethos.avaliacaoapi.exception.EmpresaNaoExisteException;
 import com.ethos.avaliacaoapi.mapper.AvaliacaoEntityMapper;
 import com.ethos.avaliacaoapi.mapper.AvaliacaoMapper;
 import com.ethos.avaliacaoapi.mapper.AvaliacaoResponseMapper;
@@ -10,6 +14,7 @@ import com.ethos.avaliacaoapi.model.Avaliacao;
 import com.ethos.avaliacaoapi.repository.AvaliacaoRepository;
 import com.ethos.avaliacaoapi.repository.entity.AvaliacaoEntity;
 import com.ethos.avaliacaoapi.services.arquivo.ListaObj;
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +35,7 @@ public class AvaliacaoService {
     private final AvaliacaoMapper avaliacaoModelMapper;
     private final AvaliacaoEntityMapper avaliacaoEntityMapper;
     private final AvaliacaoResponseMapper avaliacaoResponseMapper;
+    private final EmpresaClient empresaClient;
 
     public AvaliacaoResponse postAvaliacao(AvaliacaoRequest request) {
         Avaliacao model = avaliacaoModelMapper.from(request);
@@ -41,6 +47,18 @@ public class AvaliacaoService {
 
     private AvaliacaoEntity saveAvaliacao(AvaliacaoEntity entity) {
         AvaliacaoEntity avaliacaoSaved = null;
+
+        try {
+          EmpresaDTO empresaDto = empresaClient.findById(entity.getFkEmpresa());
+        } catch (FeignException e) {
+            if(e.status() == 404) {
+                throw new EmpresaNaoExisteException("Empresa com id %s não existe".formatted(entity.getFkEmpresa().toString()));
+            }
+
+            throw new EmpresaApiException("Erro ao buscar empresa com id %s".formatted(entity.getFkEmpresa().toString()));
+        }
+
+
         avaliacaoSaved = repository.save(entity);
         return avaliacaoSaved;
     }

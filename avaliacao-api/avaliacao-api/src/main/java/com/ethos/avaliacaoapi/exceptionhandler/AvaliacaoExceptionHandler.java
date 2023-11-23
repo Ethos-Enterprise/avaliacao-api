@@ -2,6 +2,8 @@ package com.ethos.avaliacaoapi.exceptionhandler;
 
 import com.ethos.avaliacaoapi.exception.AvaliacaoJaExisteException;
 import com.ethos.avaliacaoapi.exception.AvaliacaoNaoExisteException;
+import com.ethos.avaliacaoapi.exception.EmpresaApiException;
+import com.ethos.avaliacaoapi.exception.EmpresaNaoExisteException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -57,6 +59,24 @@ public class AvaliacaoExceptionHandler {
         final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
         problemDetail.setDetail(exception.getMessage());
         problemDetail.setTitle("Avaliação já cadastrado");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(EmpresaApiException.class)
+    public ProblemDetail empresaApiException(EmpresaApiException exception) {
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.BAD_REQUEST);
+        problemDetail.setDetail(exception.getMessage());
+        problemDetail.setTitle("Erro ao buscar empresa");
+        problemDetail.setProperty("timestamp", LocalDateTime.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(EmpresaNaoExisteException.class)
+    public ProblemDetail empresaNaoExisteException(EmpresaNaoExisteException exception) {
+        final ProblemDetail problemDetail = ProblemDetail.forStatus(HttpStatus.NOT_FOUND);
+        problemDetail.setDetail(exception.getMessage());
+        problemDetail.setTitle("Empresa não encontrado");
         problemDetail.setProperty("timestamp", LocalDateTime.now());
         return problemDetail;
     }

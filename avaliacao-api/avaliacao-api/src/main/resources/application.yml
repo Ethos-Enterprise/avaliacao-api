@@ -4,6 +4,15 @@ spring:
   application:
     name: avaliacao-api
 
+  cloud:
+    openfeign:
+      client:
+        config:
+          viaCepClient:
+            connectTimeout: 3000
+            readTimeout: 500
+            loggerLevel: BASIC
+
   datasource:
     url: jdbc:postgresql://postgres-avaliacao:5432/postgres
     username: admin
