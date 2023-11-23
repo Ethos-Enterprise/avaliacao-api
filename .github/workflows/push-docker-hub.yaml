@@ -36,4 +36,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/empresa-api:latest
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/avaliacao-app:latest
