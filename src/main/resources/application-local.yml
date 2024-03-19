@@ -1,0 +1,33 @@
+server:
+  port: 8085
+spring:
+  application:
+    name: avaliacao-api
+
+  cloud:
+    openfeign:
+      client:
+        config:
+          empresa-api:
+            connectTimeout: 3000
+            readTimeout: 500
+            loggerLevel: BASIC
+
+  sql:
+    init:
+      continue-on-error: true
+  datasource:
+    url: jdbc:postgresql://localhost:5438/postgres
+    username: admin
+    password: senha123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    generate-ddl: false
+    show-sql: true
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+url:
+  empresa-api.host: http://localhost:8084/v1.0/empresas
