@@ -68,6 +68,11 @@ public class AvaliacaoService {
         return avaliacoes.stream().map(avaliacaoResponseMapper::from).toList();
     }
 
+    public List<AvaliacaoResponse> getAvaliacaoByFkServico(UUID fkServico) {
+        List<AvaliacaoEntity> avaliacoes = (repository.findByFkServico(fkServico));
+        return avaliacoes.stream().map(avaliacaoResponseMapper::from).toList();
+    }
+
     public AvaliacaoResponse getAvaliacaoById(UUID id) {
         Optional<AvaliacaoEntity> avaliacao = repository.findById(id);
         if (avaliacao.isEmpty()) {

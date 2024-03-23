@@ -31,6 +31,7 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoEntity, UUID
 
     List<AvaliacaoEntity> findByComentario(String comentario);
 
+
     List<AvaliacaoEntity> findByNota(Integer nota);
 
     List<AvaliacaoEntity> findByData(LocalDate data);

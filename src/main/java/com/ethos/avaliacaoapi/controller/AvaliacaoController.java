@@ -8,6 +8,7 @@ import com.ethos.avaliacaoapi.services.arquivo.ListaObj;
 import jakarta.validation.Valid;
 import jakarta.validation.Validation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +22,7 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class AvaliacaoController {
 
+    @Autowired
     public final AvaliacaoService avaliacaoService;
 
     @PostMapping
@@ -48,6 +50,12 @@ public class AvaliacaoController {
         }
         return avaliacaoService.getAllAvaliacao();
     }
+
+    @GetMapping("/servico/{fkServico}")
+    public List<AvaliacaoResponse> getAvaliacaoByFkAvaliacao(@PathVariable UUID fkServico){
+        return avaliacaoService.getAvaliacaoByFkServico(fkServico);
+    }
+
 
     @GetMapping("/{id}")
     public AvaliacaoResponse getAvaliacaoById(@PathVariable UUID id) {
