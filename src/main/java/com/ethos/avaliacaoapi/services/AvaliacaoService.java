@@ -40,7 +40,7 @@ public class AvaliacaoService {
     public AvaliacaoResponse postAvaliacao(AvaliacaoRequest request) {
         Avaliacao model = avaliacaoModelMapper.from(request);
         AvaliacaoEntity entity = avaliacaoEntityMapper.from(model);
-        AvaliacaoEntity savedEntity = saveAvaliacao(entity);
+        AvaliacaoEntity savedEntity = repository.save(entity);
         return avaliacaoResponseMapper.from(savedEntity);
     }
 

@@ -19,5 +19,4 @@ public record AvaliacaoRequest(
         UUID fkServico,
         @NotNull
         UUID fkEmpresa) {
-
 }
